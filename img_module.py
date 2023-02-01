@@ -1,5 +1,6 @@
 from PIL import Image, UnidentifiedImageError
 import os
+from datetime import datetime
 
 DIR = os.path.abspath(os.getcwd())
 
@@ -9,7 +10,7 @@ class Image_Handler:
 
     def set_pic(self, path):
         try:
-            # проверка на форматы
+            # проверка на форматы + брать имя файла
             self.pic = Image.open(path)
         except FileNotFoundError:
             print("Файл не найден!")
@@ -20,16 +21,28 @@ class Image_Handler:
 
     def save_jpg(self):
         if self.pic is not None:
-            # unique pic name
+            # добавить в имя файла его предыдущее имя
             # ошибки
-            self.pic.save(f"{DIR}/res/smth.jpg", format="JPEG")
+            self.pic.save(f'{DIR}/res/{datetime.now().strftime("%H-%M-%S")}.jpg', format="JPEG")
         else:
-            print("Не было загружено изображение!")
+            print("Изображение не было загружено!")
     
+    def save_png(self):
+        if self.pic is not None:
+            self.pic.save(f'{DIR}/res/{datetime.now().strftime("%H-%M-%S")}.png', format="PNG")
+        else:
+            print("Изображение не было загружено!")
+
     def pic_info(self):
         if self.pic is not None:
             print("[Данные изображения]")
             print(f"Формат -> {self.pic.format}")
             print(f"Размер -> {self.pic.size}")
         else:
-            print("Не было загружено изображение!")
+            print("Изображение не было загружено!")
+
+    def show_pic(self):
+        if self.pic is not None:
+            self.pic.show()
+        else:
+            print("Изображение не было загружено!")
